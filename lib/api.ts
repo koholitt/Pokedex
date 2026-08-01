@@ -1,13 +1,32 @@
-export async function getPokemon() {
-  const url = "\https://pokeapi.co/api/v2/pokemon/?limit=12";
+export async function getPokemon(pokemon: string) {
+  if (typeof pokemon != "undefined" && pokemon) {
+    try {
+      const urlName = `\https://pokeapi.co/api/v2/pokemon/${pokemon}`;
+      const response = await fetch(urlName);
 
-  try {
-    const response = await fetch(url);
+      if (!response.ok)
+        throw new Error(`HTTP error! Status: ${response.status}`);
 
-    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+      return await response.json();
+    } catch (error) {
+      console.error("API Call failed:", error);
+    }
+  } else {
+    try {
+      const urlLimit = "\https://pokeapi.co/api/v2/pokemon/?limit=12";
+      const response = await fetch(urlLimit);
 
-    return await response.json();
-  } catch (error) {
-    console.error("API Call failed:", error);
+      if (!response.ok)
+        throw new Error(`HTTP error! Status: ${response.status}`);
+
+      const pokemonList = await response.json();
+
+      for (let i in pokemonList) {
+        console.log("here", i);
+      }
+      return pokemonList;
+    } catch (error) {
+      console.error("API Call failed:", error);
+    }
   }
 }

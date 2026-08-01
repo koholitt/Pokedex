@@ -2,7 +2,7 @@ import { getPokemon } from "@/lib/api";
 import { Button, Input } from "@base-ui/react";
 
 export default async function Home() {
-  const data = await getPokemon();
+  const data = await getPokemon("pikachu");
   console.log(data);
   return (
     <>
