@@ -1,9 +1,15 @@
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { getPokemon } from "@/lib/api";
 import { Button, Input } from "@base-ui/react";
 
 export default async function Home() {
-  const data = await getPokemon("pikachu");
-  console.log(data);
+  const data = await getPokemon("");
+  console.log(data.results);
   return (
     <>
       <div>
@@ -13,7 +19,19 @@ export default async function Home() {
         </form>
       </div>
 
-      <div>content</div>
+      <Card>
+        <CardHeader>
+          <CardTitle>Pokemon Number</CardTitle>
+        </CardHeader>
+
+        <CardDescription>
+          <img
+            src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${data.id}.png`}
+            alt="Pokemon image"
+          />
+          <p>Pokemon Name</p>
+        </CardDescription>
+      </Card>
 
       <div>footer?</div>
     </>
