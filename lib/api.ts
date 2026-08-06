@@ -21,6 +21,8 @@ export async function getPokemon(pokemon: string) {
 
       const pokemonList = await response.json();
 
+      //you need the URL to fetch the pokemon and get the data, use a map and see what happens
+
       return pokemonList;
     } catch (error) {
       console.error("API Call failed:", error);
