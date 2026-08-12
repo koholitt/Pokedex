@@ -33,6 +33,8 @@ export default async function Home() {
         </CardDescription>
       </Card>
 
+      <p>add multiple cards of pokemons</p>
+
       <div>footer?</div>
     </>
   );
