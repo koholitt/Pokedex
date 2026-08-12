@@ -13,15 +13,29 @@ export async function getPokemon(pokemon: string) {
     }
   } else {
     try {
-      const urlLimit = "\https://pokeapi.co/api/v2/pokemon/?limit=12";
+      const urlLimit = "https://pokeapi.co/api/v2/pokemon/?limit=12";
       const response = await fetch(urlLimit);
 
       if (!response.ok)
         throw new Error(`HTTP error! Status: ${response.status}`);
 
-      const pokemonList = await response.json();
+      const data = await response.json();
 
-      //you need the URL to fetch the pokemon and get the data, use a map and see what happens
+      const pokemonList = await Promise.all(
+        data.results.map(async (pokemon: { id: string; url: string }) => {
+          const response = await fetch(pokemon.url);
+
+          if (!response.ok)
+            throw new Error(`HTTP error! Status: ${response.status}`);
+
+          const data = await response.json();
+
+          return {
+            id: data.id,
+            name: data.name,
+          };
+        }),
+      );
 
       return pokemonList;
     } catch (error) {

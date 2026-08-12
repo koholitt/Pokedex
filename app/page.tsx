@@ -9,7 +9,7 @@ import { Button, Input } from "@base-ui/react";
 
 export default async function Home() {
   const data = await getPokemon("");
-  console.log(data.results);
+  console.log(data);
   return (
     <>
       <div>
