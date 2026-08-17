@@ -1,15 +1,44 @@
+'use client'
 import {
   Card,
   CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { getPokemon } from "@/lib/api";
-import { Button, Input } from "@base-ui/react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import Image from "next/image";
+import { useEffect, useState } from "react";
 
-export default async function Home() {
-  const data = await getPokemon("");
-  console.log(data);
+export default  function Home() {
+  const [pokemon, setPokemon] = useState<{id: number, name: string} | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('https://pokeapi.co/api/v2/pokemon/?limit=12')
+    .then((res) => res.json())
+    .then(async (data) =>{
+      const list = await Promise.all(
+        data.results.map(async (pokemon: { id: string; url: string }) => {
+          const response = await fetch(pokemon.url);
+
+          if (!response.ok)
+            throw new Error(`HTTP error! Status: ${response.status}`);
+
+          const data = await response.json();
+
+          return {
+            id: data.id,
+            name: data.name,
+          };
+        })
+      );
+
+      setPokemon(list);
+      setLoading(false);
+    })
+  }, []);
+
   return (
     <>
       <div>
@@ -25,17 +54,16 @@ export default async function Home() {
         </CardHeader>
 
         <CardDescription>
-          <img
-            src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${data.id}.png`}
-            alt="Pokemon image"
+          <Image
+            src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`}
+            alt={pokemon.name}
+            width={100}
+            height={100}
           />
           <p>Pokemon Name</p>
         </CardDescription>
       </Card>
 
-      <p>add multiple cards of pokemons</p>
-
-      <div>footer?</div>
     </>
   );
 }
