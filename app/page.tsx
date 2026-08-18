@@ -49,25 +49,30 @@ export default function Home() {
         </form>
       </div>
 
-      {pokemonList?.map((pokemon) => {
-        return (
-          <Card key={pokemon.id}>
-            <CardHeader>
-              <CardTitle>{pokemon.id}</CardTitle>
-            </CardHeader>
-            <CardDescription>
-              <Image
-                src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`}
-                alt={pokemon.name}
-                width={100}
-                height={100}
-                unoptimized
-              />
-              <p>{pokemon.name}</p>
-            </CardDescription>
-          </Card>
-        );
-      })}
+      <div className="flex flex-wrap gap-4 justify-evenly m-5">
+        {pokemonList?.map((pokemon) => {
+          return (
+            <Card
+              key={pokemon.id}
+              className="flex items-center w-100 cursor-pointer hover:scale-105 duration-200 "
+            >
+              <CardHeader className="flex items-center">
+                <CardTitle>{pokemon.id}</CardTitle>
+              </CardHeader>
+              <CardDescription className="flex flex-col items-center">
+                <Image
+                  src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon.id}.png`}
+                  alt={pokemon.name}
+                  width={200}
+                  height={200}
+                  unoptimized
+                />
+                <p>{pokemon.name}</p>
+              </CardDescription>
+            </Card>
+          );
+        })}
+      </div>
 
       <p>hello</p>
     </>
