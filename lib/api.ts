@@ -34,7 +34,7 @@ export async function getPokemon(pokemon: string) {
             id: data.id,
             name: data.name,
           };
-        })
+        }),
       );
 
       return pokemonList;
