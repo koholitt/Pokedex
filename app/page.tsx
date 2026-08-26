@@ -4,7 +4,7 @@ import PokemonGrid from "@/components/pokemonGrid";
 
 export default function Home() {
   return (
-    <div>
+    <div className="flex flex-col items-center">
       <div>
         <form action="">
           <Input type="text"></Input>
