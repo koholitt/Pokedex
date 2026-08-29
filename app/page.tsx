@@ -1,16 +1,10 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import PokemonGrid from "@/components/pokemonGrid";
+import PokemonGrid from "@/components/pokemon-grid";
+import Search from "@/components/search";
 
-export default function Home() {
+export default async function Home() {
   return (
     <div className="flex flex-col items-center">
-      <div>
-        <form action="">
-          <Input type="text"></Input>
-          <Button type="button">Filters</Button>
-        </form>
-      </div>
+      <Search />
 
       <PokemonGrid />
     </div>

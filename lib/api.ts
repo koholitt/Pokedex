@@ -11,7 +11,7 @@ export async function getPokemon() {
 
   const filteredData = await Promise.all(
     data.results.map((pokemon: { name: string; url: string }) => {
-      const getID = pokemon.url.split("/").filter(Boolean).pop();
+      const getID = pokemon.url.split("/").filter(Boolean).pop(); //get the id from the url avoiding empty items
 
       return {
         id: getID,
