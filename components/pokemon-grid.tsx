@@ -1,33 +1,37 @@
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import Image from "next/image";
 
-type PokemonTuple = [id: string, name: string, url: string];
-
-interface PokemonProps {
-  pokemonList: PokemonTuple[];
+interface pokemonAtributes {
+  id: string;
+  name: string;
+  url: string;
 }
 
-export default function PokemonGrid({ pokemonList }: PokemonProps) {
+interface pokemonArray {
+  pokemonList: pokemonAtributes[];
+}
+
+export default function PokemonGrid({ pokemonList }: pokemonArray) {
   return (
     <div className="flex justify-evenly flex-wrap gap-4">
-      {pokemonList?.map(([id, name, url]) => {
+      {pokemonList?.map((pokemon) => {
         return (
           <Card
-            key={id}
+            key={pokemon.id}
             className="w-100 flex flex-col items-center duration-300 hover:cursor-pointer hover:scale-105"
           >
             <CardHeader>
-              <CardTitle>{id}</CardTitle>
+              <CardTitle>{pokemon.id}</CardTitle>
             </CardHeader>
             <CardDescription>
               <Image
-                src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`}
-                alt={name}
+                src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon.id}.png`}
+                alt={pokemon.name}
                 width={250}
                 height={200}
                 unoptimized
               />
-              <p className="text-center text-black">{name}</p>
+              <p className="text-center text-black">{pokemon.name}</p>
             </CardDescription>
           </Card>
         );
