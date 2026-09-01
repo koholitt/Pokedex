@@ -1,19 +1,23 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
-import { getPokemon } from "@/lib/api";
 
-export default async function Search() {
-  const pokemonList = await getPokemon();
+type PokemonTuple = [id: string, name: string, url: string];
 
+interface PokemonProps {
+  pokemonList: PokemonTuple[];
+}
+
+export default function Search({ pokemonList }: PokemonProps) {
   const searchParam = useSearchParams();
   const pathName = usePathname();
   const { replace } = useRouter();
 
-  const currentQuery = searchParam.get("seach") || "";
+  const currentQuery = searchParam.get("search") || "";
 
-  const filteredPokemon = pokemonList.filter((pokemon) =>
-    pokemon.name.startsWith(currentQuery.toLowerCase()),
+  const filteredPokemon = pokemonList.filter(([id, name, url]) =>
+    name.startsWith(currentQuery.toLowerCase()),
   );
 
   const handleSearch = (term: string) => {
