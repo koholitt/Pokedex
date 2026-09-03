@@ -1,14 +1,14 @@
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import Image from "next/image";
 
-interface pokemonAtributes {
+interface pokemonAttributes {
   id: string;
   name: string;
   url: string;
 }
 
 interface pokemonArray {
-  pokemonList: pokemonAtributes[];
+  pokemonList: pokemonAttributes[];
 }
 
 export default function PokemonGrid({ pokemonList }: pokemonArray) {
