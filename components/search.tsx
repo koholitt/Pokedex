@@ -1,8 +1,6 @@
 "use client";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
-import PokemonGrid from "./pokemon-grid";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 
 interface pokemonAttributes {
   id: string;
@@ -15,24 +13,29 @@ interface pokemonArray {
 }
 
 export default function Search({ pokemonList }: pokemonArray) {
-  const [searchInput, setSearchInput] = useState("");
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const { replace } = useRouter();
+
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    const params = new URLSearchParams(searchParams);
+
+    if (value) {
+      params.set("search", value);
+    } else {
+      params.delete("search");
+    }
+
+    replace(`${pathname}?${params.toString()}`, {
+      scroll: false,
+    });
+  };
 
   return (
     <div>
       <form action="onSubmit">
-        <Input
-          type="text"
-          onChange={(e) => {
-            setSearchInput(e.target.value);
-            setTimeout(() => {
-              const filteredList = pokemonList.filter((pokemon) =>
-                pokemon.name.startsWith(searchInput.toLowerCase()),
-              );
-              PokemonGrid({ pokemonList: filteredList });
-            }, 500);
-          }}
-        ></Input>
-        <Button type="button">Filters</Button>
+        <Input type="text" onChange={handleSearch}></Input>
       </form>
     </div>
   );
