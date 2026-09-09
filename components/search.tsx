@@ -1,23 +1,14 @@
 "use client";
 import { Input } from "@/components/ui/input";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
+import { useDebouncedCallback } from "use-debounce";
 
-interface pokemonAttributes {
-  id: string;
-  name: string;
-  url: string;
-}
-
-interface pokemonArray {
-  pokemonList: pokemonAttributes[]; //Array<pokemonAttributes[]>
-}
-
-export default function Search({ pokemonList }: pokemonArray) {
+export default function Search() {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
 
-  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearch = useDebouncedCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     const params = new URLSearchParams(searchParams);
 
@@ -30,13 +21,15 @@ export default function Search({ pokemonList }: pokemonArray) {
     replace(`${pathname}?${params.toString()}`, {
       scroll: false,
     });
-  };
+  }, 1000);
 
   return (
     <div>
-      <form action="onSubmit">
-        <Input type="text" onChange={handleSearch}></Input>
-      </form>
+      <Input
+        type="text"
+        defaultValue={searchParams.get("search")?.toString()}
+        onChange={handleSearch}
+      ></Input>
     </div>
   );
 }
