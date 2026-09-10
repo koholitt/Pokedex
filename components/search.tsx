@@ -21,13 +21,14 @@ export default function Search() {
     replace(`${pathname}?${params.toString()}`, {
       scroll: false,
     });
-  }, 1000);
+  }, 300);
 
   return (
     <div>
       <Input
+        className="m-5 border-gray-400"
         type="text"
-        defaultValue={searchParams.get("search")?.toString()}
+        defaultValue={searchParams.get("search")?.toString() || ""}
         onChange={handleSearch}
       ></Input>
     </div>
