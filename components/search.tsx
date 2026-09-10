@@ -2,11 +2,13 @@
 import { Input } from "@/components/ui/input";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
+import { useState } from "react";
 
 export default function Search() {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
+  const [input, setInput] = useState(searchParams.get("search")?.toString() || "");
 
   const handleSearch = useDebouncedCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -28,8 +30,11 @@ export default function Search() {
       <Input
         className="m-5 border-gray-400"
         type="text"
-        defaultValue={searchParams.get("search")?.toString() || ""}
-        onChange={handleSearch}
+        value={input}
+        onChange={(e) => {
+          setInput(event.target.value);
+          handleSearch(e);
+        }}
       ></Input>
     </div>
   );
