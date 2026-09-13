@@ -32,7 +32,7 @@ export default function Search() {
         type="text"
         value={input}
         onChange={(e) => {
-          setInput(event.target.value);
+          setInput(e.target.value);
           handleSearch(e);
         }}
       ></Input>
