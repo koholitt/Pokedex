@@ -17,9 +17,7 @@ export default async function Home(props: {
   const allPokemon = await getPokemon();
 
   const filteredPokemon = allPokemon.filter((pokemon) => {
-    if (pokemon.id <= 12 && search == "") {
-      return pokemon.name.toLowerCase().includes(search.toLowerCase());
-    } else {
+    if (pokemon.id <= 24) {
       return pokemon.name.toLowerCase().includes(search.toLowerCase());
     }
   });
@@ -30,7 +28,7 @@ export default async function Home(props: {
 
       <PokemonGrid pokemonList={filteredPokemon} />
 
-      <Pagination />
+      <Pagination pageNumber={filteredPokemon.length} />
     </div>
   );
 }

@@ -8,7 +8,7 @@ export default function Search() {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
-  const [input, setInput] = useState(searchParams.get("search")?.toString() || "");
+  const [input, setInput] = useState(searchParams.get("search") || "");
 
   const handleSearch = useDebouncedCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -20,7 +20,7 @@ export default function Search() {
       params.delete("search");
     }
 
-    replace(`${pathname}?${params.toString()}`, {
+    replace(`${pathname}?${params}`, {
       scroll: false,
     });
   }, 300);
