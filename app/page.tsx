@@ -28,7 +28,7 @@ export default async function Home(props: {
 
       <PokemonGrid pokemonList={filteredPokemon} />
 
-      <Pagination pageNumber={filteredPokemon.length} />
+      <Pagination maxPages={filteredPokemon.length} />
     </div>
   );
 }

@@ -2,7 +2,7 @@
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { Button } from "@base-ui/react";
 
-export default function Pagination({ pageNumber }: { pageNumber: number }) {
+export default function Pagination({ maxPages }: { maxPages: number }) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
@@ -24,13 +24,11 @@ export default function Pagination({ pageNumber }: { pageNumber: number }) {
   return (
     <div>
       <ul>
-        {Array.from({ length: Math.ceil(pageNumber / 12) }).map((value, index) => {
+        {/*Each page has 12 items */}
+        {Array.from({ length: Math.ceil(maxPages / 12) }).map((value, index) => {
           return (
             <li key={index}>
-              <Button
-                value={index + 1}
-                onClick={(e) => handlePagination(e.currentTarget.value)}
-              >
+              <Button onClick={(e) => handlePagination((index + 1).toString())}>
                 {index + 1}
               </Button>
             </li>
