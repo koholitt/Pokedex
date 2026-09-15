@@ -1,13 +1,16 @@
+"use client";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import React, { useState } from "react";
+import { Button } from "@base-ui/react";
 
 export default function Pagination() {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
+  let pagesNumber = [1, 2, 3, 4, 5];
 
-  const handlePagination = (event: React.ChangeEvent<HTMLUListElement>) => {
+  const handlePagination = (event: React.ChangeEvent<HTMLButtonElement>) => {
     setCurrentPage(12 / currentPage);
     const params = new URLSearchParams(searchParams);
 
@@ -25,9 +28,22 @@ export default function Pagination() {
   return (
     <div>
       <ul>
-        {Array.from({ length: 5 }).map((item, index) => (
-          <li key={index}>{index}</li>
-        ))}
+        {pagesNumber.map((page, index) => {
+          if (page == pagesNumber.length - 1 || pagesNumber.length - 1 != 1025) {
+            pagesNumber[index] = page + 4;
+            return (
+              <li key={page}>
+                <Button onClick={handlePagination}>{page}</Button>
+              </li>
+            );
+          } else {
+            return (
+              <li key={page}>
+                <a href="">{page}</a>
+              </li>
+            );
+          }
+        })}
       </ul>
     </div>
   );
