@@ -23,7 +23,7 @@ export default function Search() {
     replace(`${pathname}?${params}`, {
       scroll: false,
     });
-  }, 300);
+  }, 200);
 
   return (
     <div>

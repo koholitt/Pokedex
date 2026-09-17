@@ -16,9 +16,18 @@ export default async function Home(props: {
 
   const allPokemon = await getPokemon();
 
-  const filteredPokemon = allPokemon.filter((pokemon) => {
-    if (pokemon.id <= 24) {
-      return pokemon.name.toLowerCase().includes(search.toLowerCase());
+  const filteredPokemon = allPokemon.filter((pokemon) =>
+    pokemon.name.toLowerCase().includes(search.toLowerCase()),
+  );
+
+  //filter(value, index) Array.object[index];
+  const showFilteredPokemon = filteredPokemon.filter((pokemon, index) => {
+    if (currentPage != 1) {
+      if (index > (currentPage - 1) * 12 && index <= currentPage * 12) {
+        return pokemon;
+      }
+    } else {
+      return index < currentPage * 12;
     }
   });
 
@@ -26,7 +35,7 @@ export default async function Home(props: {
     <div className="flex flex-col items-center">
       <Search />
 
-      <PokemonGrid pokemonList={filteredPokemon} />
+      <PokemonGrid pokemonList={showFilteredPokemon} />
 
       <Pagination maxPages={filteredPokemon.length} />
     </div>
