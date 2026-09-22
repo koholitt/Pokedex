@@ -20,16 +20,8 @@ export default async function Home(props: {
     pokemon.name.toLowerCase().includes(search.toLowerCase()),
   );
 
-  //filter(value, index) Array.object[index];
-  const showFilteredPokemon = filteredPokemon.filter((pokemon, index) => {
-    if (currentPage != 1) {
-      if (index > (currentPage - 1) * 12 && index <= currentPage * 12) {
-        return pokemon;
-      }
-    } else {
-      return index < currentPage * 12;
-    }
-  });
+  //separate the pages in 12 items each
+  const showFilteredPokemon = filteredPokemon.slice((currentPage - 1) * 12, currentPage * 12);
 
   return (
     <div className="flex flex-col items-center">
