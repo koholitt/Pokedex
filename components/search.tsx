@@ -15,6 +15,7 @@ export default function Search() {
     const params = new URLSearchParams(searchParams);
 
     if (value) {
+      params.delete("page");
       params.set("search", value);
     } else {
       params.delete("search");
