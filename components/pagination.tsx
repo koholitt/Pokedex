@@ -2,7 +2,6 @@
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { Button } from "@base-ui/react";
 import React, { useRef } from "react";
-import { start } from "repl";
 
 export default function Pagination({ maxPages }: { maxPages: number }) {
   const searchParams = useSearchParams();
