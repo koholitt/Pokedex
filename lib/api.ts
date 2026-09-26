@@ -3,7 +3,8 @@ export async function getPokemon(id: string) {
   const singleApiUrl = process.env.SINGLE_POKEMON_SEARCH_API_URL;
 
   if (!apiUrl) throw new Error("Missing POKEMON_API_URL enviroment variable");
-  if (!singleApiUrl) throw new Error("Missing POKEMON_API_URL enviroment variable");
+  if (!singleApiUrl)
+    throw new Error("Missing SINGLE_POKEMON_SEARCH_API_URL enviroment variable");
 
   if (id) {
     const response = await fetch(singleApiUrl + id);
