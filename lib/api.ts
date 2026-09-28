@@ -6,21 +6,17 @@ export async function getPokemon(id: string) {
   if (!singleApiUrl)
     throw new Error("Missing SINGLE_POKEMON_SEARCH_API_URL enviroment variable");
 
-  if (id) {
-    const response = await fetch(singleApiUrl + id);
+  const response = async () => {
+    return id ? await fetch(singleApiUrl + id) : await fetch(apiUrl + "?limit=1025");
+  };
 
-    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+  const res = await response();
 
-    const data = await response.json();
+  if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
 
-    return data;
-  } else {
-    const response = await fetch(apiUrl);
+  const data = await res.json();
 
-    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-
-    const data = await response.json();
-
+  if (!id) {
     const filteredData = await Promise.all(
       data.results.map((pokemon: { name: string; url: string }) => {
         const getId = pokemon.url.split("/").filter(Boolean).pop(); //get the id from the url avoiding empty items
@@ -38,4 +34,6 @@ export async function getPokemon(id: string) {
 
     return filteredData;
   }
+
+  return data;
 }
