@@ -20,7 +20,7 @@ export default async function Home(props: {
   const search = searchParams?.search || "";
   const currentPage = Number(searchParams?.page) || 1;
 
-  const allPokemon = await getPokemon("", "", "");
+  const allPokemon = await getPokemon();
 
   const filteredPokemon = allPokemon.filter((pokemon: pokemonAttributes) =>
     pokemon.name.toLowerCase().includes(search.toLowerCase()),
