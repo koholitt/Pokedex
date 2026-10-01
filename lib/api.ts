@@ -1,39 +1,67 @@
-export async function getPokemon(id: string) {
+export async function getPokemon() {
+  // fetches the full list used by the grid + search
   const apiUrl = process.env.POKEMON_API_URL;
+  if (!apiUrl) throw new Error("Missing POKEMON_API_URL environment variable");
+
+  const response = await fetch(apiUrl + "?limit=1025");
+  if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+  const data = await response.json();
+
+  return Promise.all(
+    data.results.map((pokemon: { name: string; url: string }) => {
+      const id = pokemon.url.split("/").filter(Boolean).pop();
+      if (!id) throw new Error("Id is missing");
+      return { id, name: pokemon.name, url: pokemon.url };
+    }),
+  );
+}
+
+export async function getPokemonById(id: string) {
+  // one pokemon's core data: name, sprite id, types array, and ability REFERENCES (name+url only - no effect text yet)
   const singleApiUrl = process.env.SINGLE_POKEMON_SEARCH_API_URL;
-
-  if (!apiUrl) throw new Error("Missing POKEMON_API_URL enviroment variable");
   if (!singleApiUrl)
-    throw new Error("Missing SINGLE_POKEMON_SEARCH_API_URL enviroment variable");
+    throw new Error("Missing SINGLE_POKEMON_SEARCH_API_URL environment variable");
 
-  const response = async () => {
-    return id ? await fetch(singleApiUrl + id) : await fetch(apiUrl + "?limit=1025");
-  };
+  const response = await fetch(singleApiUrl + id);
+  if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+  return response.json();
+}
 
-  const res = await response();
+export async function getPokemonDescription(speciesUrl: string) {
+  // species endpoint holds the flavor-text description, in many languages - filter to English
+  const response = await fetch(speciesUrl);
+  if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+  const data = await response.json();
 
-  if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+  const englishEntry = data.flavor_text_entries.find(
+    (entry: { language: { name: string } }) => entry.language.name === "en",
+  );
 
-  const data = await res.json();
+  return englishEntry
+    ? englishEntry.flavor_text.replace(/\f/g, " ")
+    : "No description available.";
+}
 
-  if (!id) {
-    const filteredData = await Promise.all(
-      data.results.map((pokemon: { name: string; url: string }) => {
-        const getId = pokemon.url.split("/").filter(Boolean).pop(); //get the id from the url avoiding empty items
+export async function getPokemonAbilities(
+  abilities: { ability: { name: string; url: string } }[],
+) {
+  // each ability only has a name+url on the pokemon object - fetch each one individually for its effect text
+  return Promise.all(
+    abilities.map(async (entry) => {
+      const response = await fetch(entry.ability.url);
+      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+      const data = await response.json();
 
-        if (getId == undefined) {
-          throw new Error("Id is missing");
-        }
-        return {
-          id: getId, //could be unfefined but pokeApi is very consistent so this might never be true
-          name: pokemon.name,
-          url: pokemon.url,
-        };
-      }),
-    );
+      const englishEffect = data.effect_entries.find(
+        (e: { language: { name: string } }) => e.language.name === "en",
+      );
 
-    return filteredData;
-  }
-
-  return data;
+      return {
+        name: entry.ability.name,
+        effect: englishEffect
+          ? englishEffect.short_effect
+          : "No effect description available.",
+      };
+    }),
+  );
 }
