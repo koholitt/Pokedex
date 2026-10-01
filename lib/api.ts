@@ -9,7 +9,7 @@ export async function getPokemon() {
 
   return Promise.all(
     data.results.map((pokemon: { name: string; url: string }) => {
-      const id = pokemon.url.split("/").filter(Boolean).pop();
+      const id = pokemon.url.split("/").filter(Boolean).pop(); //get the id from the url
       if (!id) throw new Error("Id is missing");
       return { id, name: pokemon.name, url: pokemon.url };
     }),
@@ -17,7 +17,7 @@ export async function getPokemon() {
 }
 
 export async function getPokemonById(id: string) {
-  // one pokemon's core data: name, sprite id, types array, and ability REFERENCES (name+url only - no effect text yet)
+  // one pokemon data
   const singleApiUrl = process.env.SINGLE_POKEMON_SEARCH_API_URL;
   if (!singleApiUrl)
     throw new Error("Missing SINGLE_POKEMON_SEARCH_API_URL environment variable");

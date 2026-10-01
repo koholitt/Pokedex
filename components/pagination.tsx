@@ -37,8 +37,6 @@ export default function Pagination({ maxPages }: { maxPages: number }) {
           );
         })}
       </ul>
-
-      <p className="text-center text-gray-400">Drag and scroll to see more pages</p>
     </div>
   );
 }
